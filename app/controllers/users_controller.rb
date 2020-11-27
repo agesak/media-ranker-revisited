@@ -9,10 +9,10 @@ class UsersController < ApplicationController
   end
 
   def create
-    auth_hash = request.env["omniauth.hash"]
+    auth_hash = request.env["omniauth.auth"]
 
     # raise
-    user = User.find_by(uid: auth_hash[uid], provider: "github")
+    user = User.find_by(uid: auth_hash[:uid], provider: auth_hash["provider"])
     if user
       flash[:success] = "Logging in as returning user #{user.username}"
     else
