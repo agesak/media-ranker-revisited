@@ -1,5 +1,6 @@
 class Work < ApplicationRecord
   CATEGORIES = %w(album book movie)
+  belongs_to :user
   has_many :votes, dependent: :destroy
   has_many :ranking_users, through: :votes, source: :user
 
@@ -41,6 +42,12 @@ class Work < ApplicationRecord
 
   def self.top_ten(category)
     where(category: category).order(vote_count: :desc).limit(10)
+  end
+
+  def is_owner(login_user)
+    return false unless self.user
+    return true if login_user.id == self.user.id
+    return false
   end
 
   private

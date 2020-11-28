@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :find_user
-  before_action :require_login, only: [:index, :show]
 
   def render_404
     return render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
@@ -19,7 +18,7 @@ class ApplicationController < ActionController::Base
   def require_login
     if find_user.nil?
       flash[:status] = :failure
-      flash[:result_text] = "You must be logged in to view this"
+      flash[:result_text] = "You must be logged in to do that"
       redirect_to root_path
     end
   end
