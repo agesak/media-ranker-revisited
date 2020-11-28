@@ -2,6 +2,8 @@ class WorksController < ApplicationController
   # We should always be able to tell what category
   # of work we're dealing with
   before_action :category_from_work, except: [:root, :index, :new, :create]
+  before_action :require_login, except: :root
+  before_action :authorized, only: [:edit, :update, :destroy]
 
   def root
     @albums = Work.best_albums
@@ -81,6 +83,14 @@ class WorksController < ApplicationController
   end
 
   private
+
+  def authorized
+    unless @work.is_owner(@login_user)
+      flash[:status]= :failure
+      flash[:result_text] = "You must log in to do that"
+      redirect_back fallback_location: root_path
+    end
+  end
 
   def media_params
     params.require(:work).permit(:title, :category, :creator, :description, :publication_year)
