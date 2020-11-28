@@ -11,7 +11,7 @@ describe UsersController do
 
       must_redirect_to root_path
       expect(session[:user_id]).must_equal user.id
-      expect(flash[:success]).must_equal "Logged in as returning user #{user.username}"
+      expect(flash[:result_text]).must_equal "Logged in as returning user #{user.username}"
     end
 
     it "creates an account for a new user and redirects to the root route" do
@@ -26,7 +26,7 @@ describe UsersController do
       must_redirect_to root_path
       expect(session[:user_id]).must_equal(User.find_by(provider: user.provider, 
         uid: user.uid, email: user.email).id)
-        expect(flash[:success]).must_equal "Logged in as new user #{user.username}"
+        expect(flash[:result_text]).must_equal "Logged in as new user #{user.username}"
     end
 
     it "will handle a request with invalid information" do
@@ -36,7 +36,7 @@ describe UsersController do
       }.wont_change "User.count"
 
     must_redirect_to root_path
-    expect(flash[:error]).must_equal "Could not create new user account: {:username=>[\"can't be blank\"]}"
+    expect(flash[:messages]).must_equal "Could not create new user account: {:username=>[\"can't be blank\"]}"
     expect(session[:user_id]).must_equal nil
     end
 
@@ -50,7 +50,7 @@ describe UsersController do
 
         must_redirect_to root_path
         expect(session[:user_id]).must_equal nil
-        expect(flash[:success]).must_equal "Successfully logged out"
+        expect(flash[:result_text]).must_equal "Successfully logged out"
       end
 
   #   it "will redirect back and give a flash notice if a guest user tries to logout" do
