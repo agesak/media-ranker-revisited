@@ -1,33 +1,47 @@
 require "test_helper"
 
 describe UsersController do
+  describe "auth_callback" do
+    it "logs in an existing user and redirects to the root path" do
+      user = users(:dan)
+
+      expect {
+        perform_login(user)
+      }.wont_change "User.count"
+
+      must_redirect_to root_path
+      expect(session[:user_id]).must_equal user.id
+      expect(flash[:success]).must_equal "Logged in as returning user #{user.username}"
+    end
+
+    it "creates an account for a new user and redirects to the root route" do
+      user = User.new(uid: 99999, username: "test_user",
+      email: "test@user.com", image: "test image", provider: "github",
+      name: "test user")
+
+      expect {
+        perform_login(user)
+      }.must_differ "User.count", 1
+
+      must_redirect_to root_path
+      expect(session[:user_id]).must_equal(User.find_by(provider: user.provider, 
+        uid: user.uid, email: user.email).id)
+        expect(flash[:success]).must_equal "Logged in as new user #{user.username}"
+
+    end
+
+  end
+  
+
+
+
+
+
+
   # Tests written for Oauth.    
   # describe "auth_callback" do
-  #   it "logs in an existing user and redirects to the root path" do
-  #     user = users(:dan)
 
-  #     expect {
-  #       perform_login(user)
-  #     }.wont_change "User.count"
 
-  #     must_redirect_to root_path
-  #     expect(session[:user_id]).must_equal user.id
-  #     expect(flash[:notice]).must_equal "Logged in as returning user #{user.username}"
-  #   end
-
-  #   it "creates an account for a new user and redirects to the root route" do
-  #     user = User.new(provider: "github", uid: 99999, username: "test_user", email: "test@user.com")
-
-  #     expect {
-  #       perform_login(user)
-  #     }.must_differ "User.count", 1
-
-  #     must_redirect_to root_path
-  #     expect(session[:user_id]).must_equal(User.find_by(provider: user.provider, 
-  #       uid: user.uid, email: user.email).id)
-  #       expect(flash[:notice]).must_equal "Logged in as new user #{user.username}"
-
-  #   end
 
   #   it "will handle a request with invalid information" do
   #     user = User.new(provider: "github", uid: nil, username: nil, email: nil)
