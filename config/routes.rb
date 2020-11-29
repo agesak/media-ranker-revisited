@@ -9,6 +9,5 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show]
 
   get "/auth/github", as: "github_login"
-  get "/auth/google_oauth2", as: "google_login"
   get "/auth/:provider/callback", to: "users#create", as: "omniauth_callback"
 end
