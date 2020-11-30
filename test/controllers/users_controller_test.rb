@@ -30,9 +30,10 @@ describe UsersController do
     end
 
     it "will handle a request with invalid information" do
-      user = User.new
+      invalid_user = User.new(uid: 99999, email: "test@user.com", image: "test image",
+      provider: "github", name: "test user")
       expect {
-        perform_login(user)
+        perform_login(invalid_user)
       }.wont_change "User.count"
 
     must_redirect_to root_path

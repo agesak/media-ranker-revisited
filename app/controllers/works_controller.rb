@@ -19,7 +19,7 @@ class WorksController < ApplicationController
   end
 
   def create
-    @work = Work.new(media_params)
+    @work = @login_user.works.new(media_params)
     @media_category = @work.category
     if @work.save
       flash[:status] = :success
@@ -81,6 +81,14 @@ class WorksController < ApplicationController
   end
 
   private
+
+  def authorized
+    unless @work.is_owner(@login_user)
+      flash[:status]= :failure
+      flash[:result_text] = "You are not authorized to do that"
+      redirect_back fallback_location: root_path
+    end
+  end
 
   def media_params
     params.require(:work).permit(:title, :category, :creator, :description, :publication_year)
