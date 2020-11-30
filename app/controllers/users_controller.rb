@@ -15,7 +15,6 @@ class UsersController < ApplicationController
     auth_hash = request.env["omniauth.auth"]
 
     user = User.find_by(uid: auth_hash[:uid], provider: auth_hash["provider"])
-    puts "user is #{user} #{!!user}"
     if user
       flash[:status] = :success
       flash[:result_text] = "Logged in as returning user #{user.username}"
@@ -27,8 +26,6 @@ class UsersController < ApplicationController
       elsif auth_hash["provider"] == "google_oauth2"
         user = User.build_from_google(auth_hash)
       end
-      puts auth_hash
-      puts "user is #{user} #{!!user}"
       if user
         if user.save
           flash[:status] = :success

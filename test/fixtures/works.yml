@@ -24,3 +24,8 @@ poodr:
 movie:
   title: test movie - has only required fields
   category: movie
+
+danswork:
+  title: a work just for dan
+  category: album
+  user: dan
