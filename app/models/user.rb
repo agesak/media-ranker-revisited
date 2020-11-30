@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  has_many :works
   has_many :votes
   has_many :ranked_works, through: :votes, source: :work
 
@@ -12,15 +11,7 @@ class User < ApplicationRecord
     user.username = auth_hash["info"]["nickname"]
     user.name = auth_hash["info"]["name"]
     user.email = auth_hash["info"]["email"]
-    return user
-  end
 
-  def self.build_from_google(auth_hash)
-    user = User.new
-    user.uid = auth_hash[:uid]
-    user.provider = auth_hash["provider"]
-    user.username = auth_hash["info"]["first_name"]
-    user.name = auth_hash["info"]["name"]
     return user
   end
 end

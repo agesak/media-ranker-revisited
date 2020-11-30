@@ -1,7 +1,4 @@
 class UsersController < ApplicationController
-
-  before_action :require_login, except: :create
-
   def index
     @users = User.all
   end
@@ -18,6 +15,7 @@ class UsersController < ApplicationController
     if user
       flash[:status] = :success
       flash[:result_text] = "Logged in as returning user #{user.username}"
+
       session[:user_id] = user.id
       return redirect_to root_path
     else
