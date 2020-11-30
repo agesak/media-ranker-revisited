@@ -64,7 +64,7 @@ describe WorksController do
         get works_path
 
         expect(flash[:status]).must_equal :failure
-        expect(flash[:result_text]).must_equal  "You must be logged in to do that"
+        expect(flash[:result_text]).must_equal  "You must be logged in to view this"
         must_redirect_to root_path
       end
     end
@@ -85,7 +85,7 @@ describe WorksController do
       it "redirects for a guest user" do
         get new_work_path
         expect(flash[:status]).must_equal :failure
-        expect(flash[:result_text]).must_equal  "You must be logged in to do that"
+        expect(flash[:result_text]).must_equal  "You must be logged in to view this"
         must_redirect_to root_path
       end
     end
@@ -141,7 +141,7 @@ describe WorksController do
         }.wont_change "Work.count"
 
         expect(flash[:status]).must_equal :failure
-        expect(flash[:result_text]).must_equal  "You must be logged in to do that"
+        expect(flash[:result_text]).must_equal  "You must be logged in to view this"
         must_redirect_to root_path
       end
     end
@@ -174,7 +174,7 @@ end
       it "redirects for a guest user" do
         get work_path(existing_work.id)
         expect(flash[:status]).must_equal :failure
-        expect(flash[:result_text]).must_equal  "You must be logged in to do that"
+        expect(flash[:result_text]).must_equal  "You must be logged in to view this"
         must_redirect_to root_path
       end
     end
@@ -260,7 +260,7 @@ end
         }.wont_change "Work.count"
 
         expect(flash[:status]).must_equal :failure
-        expect(flash[:result_text]).must_equal  "You must be logged in to do that"
+        expect(flash[:result_text]).must_equal  "You must be logged in to view this"
         must_redirect_to root_path
       end
     end
@@ -303,7 +303,7 @@ end
   describe "upvote" do
     it "redirects to the work page if no user is logged in" do
       expect{post upvote_path(existing_work.id)}.wont_change "Vote.count"
-      expect(flash[:result_text]).must_equal "You must be logged in to do that"
+      expect(flash[:result_text]).must_equal "You must be logged in to view this"
       expect(flash[:status]).must_equal :failure
     end
 

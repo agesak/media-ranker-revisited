@@ -44,6 +44,12 @@ class Work < ApplicationRecord
     where(category: category).order(vote_count: :desc).limit(10)
   end
 
+  def is_owner(login_user)
+    return false unless self.user
+    return true if login_user.id == self.user.id
+    return false
+  end
+
   private
 
   def fix_category
